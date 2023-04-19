@@ -13,6 +13,7 @@ from utils import get_model, to_device, prepare_dataloader
 
 import matplotlib.pyplot as plt
 import matplotlib as mpl
+
 mpl.rcParams['figure.figsize'] = (15, 10)
 
 
@@ -31,6 +32,14 @@ def return_arguments():
                             "image_02/data" for left images and \
                             "image_03/data" for right images'
                         )
+    parser.add_argument('filenames_file_train',
+                        type=str,
+                        help='path to the filenames text file'
+                        )
+    parser.add_argument('filenames_file_val',
+                        type=str,
+                        help='path to the filenames text file'
+                        )
     parser.add_argument('model_path', help='path to the trained model')
     parser.add_argument('output_directory',
                         help='where save dispairities\
@@ -42,15 +51,15 @@ def return_arguments():
                         default=512)
     parser.add_argument('--model', default='resnet18_md',
                         help='encoder architecture: ' +
-                        'resnet18_md or resnet50_md ' + '(default: resnet18)'
-                        + 'or torchvision version of any resnet model'
+                             'resnet18_md or resnet50_md ' + '(default: resnet18)'
+                             + 'or torchvision version of any resnet model'
                         )
     parser.add_argument('--pretrained', default=False,
                         help='Use weights of pretrained model'
                         )
     parser.add_argument('--mode', default='train',
                         help='mode: train or test (default: train)')
-    parser.add_argument('--epochs', default=50,type=int,
+    parser.add_argument('--epochs', default=50, type=int,
                         help='number of total epochs to run')
     parser.add_argument('--learning_rate', default=1e-4,
                         help='initial learning rate (default: 1e-4)')
@@ -73,10 +82,10 @@ def return_arguments():
         2.0,
         0.8,
         1.2,
-        ],
-            help='lowest and highest values for gamma,\
+    ],
+                        help='lowest and highest values for gamma,\
                         brightness and color respectively'
-            )
+                        )
     parser.add_argument('--print_images', default=False,
                         help='print disparity and image\
                         generated from disparity on every iteration'
@@ -136,7 +145,7 @@ class Model:
                 disp_gradient_w=0.1, lr_w=1).to(self.device)
             self.optimizer = optim.Adam(self.model.parameters(),
                                         lr=args.learning_rate)
-            self.val_n_img, self.val_loader = prepare_dataloader(args.val_data_dir, args.mode,
+            self.val_n_img, self.val_loader = prepare_dataloader(args.val_data_dir, args.filenames_file_val, args.mode,
                                                                  args.augment_parameters,
                                                                  False, args.batch_size,
                                                                  (args.input_height, args.input_width),
@@ -152,15 +161,14 @@ class Model:
         self.input_height = args.input_height
         self.input_width = args.input_width
 
-        self.n_img, self.loader = prepare_dataloader(args.data_dir, args.mode, args.augment_parameters,
+        self.n_img, self.loader = prepare_dataloader(args.data_dir, args.filenames_file_train, args.mode,
+                                                     args.augment_parameters,
                                                      args.do_augmentation, args.batch_size,
                                                      (args.input_height, args.input_width),
                                                      args.num_workers)
 
-
         if 'cuda' in self.device:
             torch.cuda.synchronize()
-
 
     def train(self):
         losses = []
@@ -223,9 +231,9 @@ class Model:
                                      (1, 2, 0))))
                     plt.show()
                     print('left_est[0]')
-                    plt.imshow(np.transpose(self.loss_function\
-                        .left_est[0][0, :, :, :].cpu().detach().numpy(),
-                        (1, 2, 0)))
+                    plt.imshow(np.transpose(self.loss_function \
+                                            .left_est[0][0, :, :, :].cpu().detach().numpy(),
+                                            (1, 2, 0)))
                     plt.show()
                     print('disp_right_est[0]')
                     plt.imshow(np.squeeze(
@@ -235,8 +243,8 @@ class Model:
                     plt.show()
                     print('right_est[0]')
                     plt.imshow(np.transpose(self.loss_function.right_est[0][0,
-                               :, :, :].cpu().detach().numpy(), (1, 2,
-                               0)))
+                                            :, :, :].cpu().detach().numpy(), (1, 2,
+                                                                              0)))
                     plt.show()
                 running_loss += loss.item()
 
@@ -254,7 +262,7 @@ class Model:
             # Estimate loss per image
             running_loss /= self.n_img / self.args.batch_size
             running_val_loss /= self.val_n_img / self.args.batch_size
-            print (
+            print(
                 'Epoch:',
                 epoch + 1,
                 'train_loss:',
@@ -264,14 +272,14 @@ class Model:
                 'time:',
                 round(time.time() - c_time, 3),
                 's',
-                )
+            )
             self.save(self.args.model_path[:-4] + '_last.pth')
             if running_val_loss < best_val_loss:
                 self.save(self.args.model_path[:-4] + '_cpt.pth')
                 best_val_loss = running_val_loss
                 print('Model_saved')
 
-        print ('Finished Training. Best loss:', best_loss)
+        print('Finished Training. Best loss:', best_loss)
         self.save(self.args.model_path)
 
     def save(self, path):
@@ -283,10 +291,10 @@ class Model:
     def test(self):
         self.model.eval()
         disparities = np.zeros((self.n_img,
-                               self.input_height, self.input_width),
+                                self.input_height, self.input_width),
                                dtype=np.float32)
         disparities_pp = np.zeros((self.n_img,
-                                  self.input_height, self.input_width),
+                                   self.input_height, self.input_width),
                                   dtype=np.float32)
         with torch.no_grad():
             for (i, data) in enumerate(self.loader):
@@ -298,7 +306,7 @@ class Model:
                 disp = disps[0][:, 0, :, :].unsqueeze(1)
                 disparities[i] = disp[0].squeeze().cpu().numpy()
                 disparities_pp[i] = \
-                    post_process_disparity(disps[0][:, 0, :, :]\
+                    post_process_disparity(disps[0][:, 0, :, :] \
                                            .cpu().numpy())
 
         np.save(self.output_directory + '/disparities.npy', disparities)
@@ -319,4 +327,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
