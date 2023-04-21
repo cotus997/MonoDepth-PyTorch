@@ -11,8 +11,9 @@ def read_path_images(data_dir: str, name_file: str) -> Tuple:
         left = []
         right = []
         for line in f:
-            left.append(os.path.join(data_dir, os.path.relpath(line.rstrip().split()[0])))
-            right.append(os.path.join(data_dir, os.path.relpath(line.rstrip().split()[1])))
+            line_tmp = line.replace(".jpg", ".png").rstrip().split()
+            left.append(os.path.join(data_dir, os.path.relpath(line_tmp[0])))
+            right.append(os.path.join(data_dir, os.path.relpath(line_tmp[1])))
 
     return (left, right)
 
