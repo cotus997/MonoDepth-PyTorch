@@ -1,0 +1,14 @@
+pred_depth = width_to_focal[width] * 0.54 / pred_disp
+/public.hpc/giosue.cotugno/MonoDepth-PyTorch/evaluation_utils.py:65: RuntimeWarning: overflow encountered in true_divide
+  pred_depth = width_to_focal[width] * 0.54 / pred_disp
+   abs_rel,     sq_rel,        rms,    log_rms,     d1_all,         a1,         a2,         a3
+    0.1242,     1.4329,      6.133,      0.214,     31.436,      0.842,      0.939,      0.975
+
+
+##post process
+/public.hpc/giosue.cotugno/MonoDepth-PyTorch/evaluation_utils.py:65: RuntimeWarning: divide by zero encountered in true_divide
+  pred_depth = width_to_focal[width] * 0.54 / pred_disp
+/public.hpc/giosue.cotugno/MonoDepth-PyTorch/evaluation_utils.py:65: RuntimeWarning: overflow encountered in true_divide
+  pred_depth = width_to_focal[width] * 0.54 / pred_disp
+   abs_rel,     sq_rel,        rms,    log_rms,     d1_all,         a1,         a2,         a3
+    0.1202,     1.3054,      5.935,      0.209,     31.355,      0.843,      0.941,      0.977
