@@ -1,13 +1,10 @@
-from typing import Tuple
-
 import torch
 import collections
-import os
-from torch.utils.data import DataLoader, ConcatDataset
+from torch.utils.data import DataLoader
 
-from models_resnet import Resnet18_md, Resnet50_md, ResnetModel
-from data_loader import KittiLoader
-from transforms import image_transforms
+from src.models_resnet import Resnet18_md, Resnet50_md, ResnetModel
+from src.data_loader import KittiLoader
+from src.transforms import image_transforms
 
 
 def to_device(input, device):

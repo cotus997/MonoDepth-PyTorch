@@ -58,7 +58,7 @@ data
 ```
     
 ## Training
-Example of training can be find in [Monodepth](Monodepth.ipynb) notebook.
+Example of training can be find in [Monodepth](notebook/Monodepth.ipynb) notebook.
 
 Model class from main_monodepth_pytorch.py should be initialized with following params (as easydict) for training:
  - `data_dir`: path to the dataset folder
@@ -112,10 +112,10 @@ The provided model was trained on the whole dataset, except subsets, listed belo
 
 The demo gif image is a visualization of the predictions on `2011_09_26_drive_0014_sync` subset.
 
-See [Monodepth](Monodepth.ipynb) notebook for the details on the training.
+See [Monodepth](notebook/Monodepth.ipynb) notebook for the details on the training.
     
 ## Testing
-Example of testing can also be find in [Monodepth](Monodepth.ipynb) notebook.
+Example of testing can also be find in [Monodepth](notebook/Monodepth.ipynb) notebook.
 
 Model class from main_monodepth_pytorch.py should be initialized with following params (as easydict) for testing:
  - `data_dir`: path to the dataset folder
@@ -131,7 +131,7 @@ Model class from main_monodepth_pytorch.py should be initialized with following 
  
 After that calling test() on Model class object starts testing process.
 
-Also it can be started via calling [main_monodepth_pytorch.py](main_monodepth_pytorch.py) through the terminal and feeding parameters as argparse arguments. 
+Also it can be started via calling [main_monodepth_pytorch.py](src/main_monodepth_pytorch.py) through the terminal and feeding parameters as argparse arguments. 
     
 ## Requirements
 This code was tested with PyTorch 0.4.1, CUDA 9.1 and Ubuntu 16.04. Other required modules:

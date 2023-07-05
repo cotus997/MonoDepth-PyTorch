@@ -6,7 +6,7 @@ import torch.optim as optim
 
 # custom modules
 
-from loss import MonodepthLoss
+from src.loss import MonodepthLoss
 from utils import get_model, to_device, prepare_dataloader
 
 # plot params
