@@ -21,16 +21,7 @@ def return_arguments():
     parser = argparse.ArgumentParser(description='PyTorch Monodepth')
 
     parser.add_argument('data_dir',
-                        help='path to the dataset folder. \
-                        It should contain subfolders with following structure:\
-                        "image_02/data" for left images and \
-                        "image_03/data" for right images'
-                        )
-    parser.add_argument('val_data_dir',
-                        help='path to the validation dataset folder. \
-                            It should contain subfolders with following structure:\
-                            "image_02/data" for left images and \
-                            "image_03/data" for right images'
+                        help='path to the dataset folder'
                         )
     parser.add_argument('filenames_file_train',
                         type=str,
@@ -145,7 +136,7 @@ class Model:
                 disp_gradient_w=0.1, lr_w=1).to(self.device)
             self.optimizer = optim.Adam(self.model.parameters(),
                                         lr=args.learning_rate)
-            self.val_n_img, self.val_loader = prepare_dataloader(args.val_data_dir, args.filenames_file_val, args.mode,
+            self.val_n_img, self.val_loader = prepare_dataloader(args.data_dir, args.filenames_file_val, args.mode,
                                                                  args.augment_parameters,
                                                                  False, args.batch_size,
                                                                  (args.input_height, args.input_width),

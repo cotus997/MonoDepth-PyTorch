@@ -5,6 +5,7 @@ This repo is inspired by an amazing work of [Clément Godard](http://www0.cs.ucl
 Original code and paper could be found via the following links:
 1. [Original repo](https://github.com/mrharicot/monodepth)
 2. [Original paper](https://arxiv.org/abs/1609.03677)
+3. [Forked repo](https://github.com/OniroAI/MonoDepth-PyTorch)
 
 ## MonoDepth-PyTorch
 This repository contains code and additional parts for the PyTorch port of the MonoDepth Deep Learning algorithm. For more information about original work, please visit [author's website](http://visual.cs.ucl.ac.uk/pubs/monoDepth/)
@@ -31,38 +32,19 @@ wget -i kitti_archives_to_download.txt -P ~/my/output/folder/
 kitti_archives_to_download.txt may be found in this repo.
 
 ## Dataloader
-Dataloader assumes the following structure of the folder with train examples (**'data_dir'** argument contains path to that folder):
-The folder contains subfolders with following folders "image_02/data" for left images and  "image_03/data" for right images.
-Such structure is default for KITTI dataset
+Dataloader takes as input the original split files from the paper.
+Use the kitti_train/test/val_files.txt located into the **util_dataset** folder to train on the KITTI dataset.
 
-Example data folder structure (path to the "kitti" directory should be passed as **'data_dir'** in this example):
-```
-data
-├── kitti
-│   ├── 2011_09_26_drive_0001_sync
-│   │   ├── image_02
-│   │   │   ├─ data
-│   │   │   │   ├── 0000000000.png
-│   │   │   │   └── ...
-│   │   ├── image_03
-│   │   │   ├── data
-│   │   │   │   ├── 0000000000.png
-│   │   │   │   └── ...
-│   ├── ...
-├── models
-├── output
-├── test
-│   ├── left
-│   │   ├── test_1.jpg
-│   │   └── ...
-```
+
+
     
 ## Training
 Example of training can be find in [Monodepth](notebook/Monodepth.ipynb) notebook.
 
 Model class from main_monodepth_pytorch.py should be initialized with following params (as easydict) for training:
  - `data_dir`: path to the dataset folder
- - `val_data_dir`: path to the validation dataset folder
+ - `filenames_file_train`: file containing the path of the images to use for the train
+ - `filenames_file_val`: file containing the path of the images to use for the validation
  - `model_path`: path to save the trained model
  - `output_directory`: where save dispairities for tested images
  - `input_height`
